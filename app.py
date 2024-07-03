@@ -1,3 +1,5 @@
+import json
+
 class GESTION:
     @staticmethod
     def guardar_bodegas(bodegas, filename="bodegas.json"):
@@ -9,16 +11,16 @@ class GESTION:
         try:
             with open(filename, "r") as file:
                 bodegas_data = json.load(file)
-                return [Bodega(**data) for data in bodegas_data]
-        except FileNotFoundError:
+                return [BODEGAS(**data) for data in bodegas_data]
+        except (FileNotFoundError, json.JSONDecodeError):
             return []
 
 class BODEGAS:
     def __init__(self, identificador, capacidad, espacio_usado, productos):
-        self.identificador = int(identificador)
-        self.capacidad = int(capacidad)
-        self.espacio_usado = 0 
-        self.productos = []
+        self.identificador = identificador
+        self.capacidad = capacidad
+        self.espacio_usado = espacio_usado
+        self.productos = productos
 
     def buscar_bodega(self,identificador):
         for bodega in self.bodegas:
@@ -32,18 +34,16 @@ class BODEGAS:
         return f"Identificador:{self.identificador}, Capacidad:{self.capacidad}, Espacio usado:{self.espacio_usado}, Productos:{self.productos}"  
 
 class PANEL_CONTROL:
-    def __init__():
+    def __init__(self):
         self.bodegas = GESTION.cargar_bodegas()
 
-    def crear_bodega():
-        identificador = input("Ingrese su id: ")
-        capacidad = input("Ingrese su capacidad: ")
-        nueva_bodega = BODEGAS(identificador, capacidad)
+    def crear_bodega(self,identificador,capacidad,espacio_usado,productos):
+        nueva_bodega = BODEGAS(identificador,capacidad,espacio_usado,productos)
         self.bodegas.append(nueva_bodega)
         GESTION.guardar_bodegas(self.bodegas)
-        Print("Bodega creada con exito...")
+        print("Bodega creada con exito...")
 
-    def eliminar_bodega(identificador):
+    def eliminar_bodega(self,identificador):
         bodega = BODEGAS.buscar_bodega(Identificador)
         if bodega:
             self.bodegas.pop(nueva_bodega)
@@ -176,39 +176,46 @@ def dar_opciones():
     return eleccion
     
 def menu():
+
+    Panel_Control = PANEL_CONTROL()
+
     while True:
         eleccion = dar_opciones()
         if eleccion == 1:
-            PANEL_CONTROL.crear_bodega()
+            productos = []
+            espacio_usado = 0
+            identificador = input("Ingrese su id: ")
+            capacidad = input("Ingrese su capacidad: ")
+            Panel_Control.crear_bodega(identificador,capacidad,espacio_usado,productos)
 
         elif eleccion == 2:
             identificador = input("Ingrese el id de la bodega: ")
-            PANEL_CONTROL.eliminar_bodega(identificador)
+            Panel_Control.eliminar_bodega(identificador)
 
         elif eleccion == 3:
             identificador = input("Ingrese el id de la bodega: ")
-            PANEL_CONTROL.mostrar_bodega(identificador)
+            Panel_Control.mostrar_bodega(identificador)
 
         elif eleccion == 4:
-            PANEL_CONTROL.mostrar_bodegas()
+            Panel_Control.mostrar_bodegas()
 
         elif eleccion == 5:
             identificador_bodega = input("Ingrese el id de la bodega: ")
             identificador_obj = input("Ingrese el id de su objeto: ")
-            PANEL_CONTROL.mostrar_producto_bodega(identificador_bodega,identificador_obj)
+            Panel_Control.mostrar_producto_bodega(identificador_bodega,identificador_obj)
 
         elif eleccion == 6:
             identificador = input("Ingrese el id de la bodega: ")
-            PANEL_CONTROL.mostrar_productos_bodega(identificador)
+            Panel_Control.mostrar_productos_bodega(identificador)
 
         elif eleccion == 7:
             identificador_bodega = input("Ingrese el id de la bodega: ")
             identificador_obj = input("Ingrese el id de su objeto: ")
-            PANEL_CONTROL.cambiar_cantidad_objeto(identificador_bodega,identificador_obj)
+            Panel_Control.cambiar_cantidad_objeto(identificador_bodega,identificador_obj)
 
         elif eleccion == 8:
             identificador_bodega = input("Ingrese el id de la bodega: ")
-            PANEL_CONTROL.agregar_objeto(identificador_bodega)
+            Panel_Control.agregar_objeto(identificador_bodega)
 
         elif eleccion == 9:
             Print("Programa terminado")
