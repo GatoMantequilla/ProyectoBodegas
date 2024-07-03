@@ -14,7 +14,7 @@ class GESTION:
             return []
 
 class BODEGAS:
-    def __main__(self, identificador, capacidad, espacio_usado, productos):
+    def __init__(self, identificador, capacidad, espacio_usado, productos):
         self.identificador = int(identificador)
         self.capacidad = int(capacidad)
         self.espacio_usado = 0 
