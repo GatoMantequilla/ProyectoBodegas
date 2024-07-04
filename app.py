@@ -204,7 +204,7 @@ def menu():
 
     while True:
         eleccion = dar_opciones()
-        if eleccion == 1:
+        if eleccion == 1: # Crear bodega
             productos = []
             espacio_usado = 0
             identificador = input("Ingrese su id: ")
@@ -212,48 +212,48 @@ def menu():
             print(" ")
             Panel_Control.crear_bodega(identificador,capacidad,espacio_usado,productos)
 
-        elif eleccion == 2:
+        elif eleccion == 2: # Eliminar bodega
             identificador = input("Ingrese el id de la bodega: ")
             print(" ")
             Panel_Control.eliminar_bodega(identificador)
 
-        elif eleccion == 3:
+        elif eleccion == 3: # Mostrar información de una bodega
             identificador = input("Ingrese el id de la bodega: ")
             print(" ")
             Panel_Control.mostrar_bodega(identificador)
 
-        elif eleccion == 4:
+        elif eleccion == 4: # Mostrar información de bodegas
             Panel_Control.mostrar_bodegas()
 
-        elif eleccion == 5:
+        elif eleccion == 5: # Mostrar información de un producto
             identificador_bodega = input("Ingrese el id de la bodega: ")
             identificador_obj = input("Ingrese el id de su objeto: ")
             print(" ")
             Panel_Control.mostrar_producto_bodega(identificador_bodega,identificador_obj)
 
-        elif eleccion == 6:
+        elif eleccion == 6: # Mostrar información de productos
             identificador = input("Ingrese el id de la bodega: ")
             print(" ")
             Panel_Control.mostrar_productos_bodega(identificador)
 
-        elif eleccion == 7:
+        elif eleccion == 7: # Cambiar cantidad de producto
             identificador_bodega = input("Ingrese el id de la bodega: ")
             identificador_obj = input("Ingrese el id de su objeto: ")
             print(" ")
             Panel_Control.cambiar_cantidad_objeto(identificador_bodega,identificador_obj)
 
-        elif eleccion == 8:
+        elif eleccion == 8: # Agregar un objeto
             identificador_bodega = input("Ingrese el id de la bodega: ")
             print(" ")
             Panel_Control.agregar_objeto(identificador_bodega)
 
-        elif eleccion == 9:
+        elif eleccion == 9: # Eliminar objeto
             identificador_bodega = input("Ingrese el id de la bodega: ")
             identificador_obj = input("Ingrese el id de su objeto: ")
             print(" ")
             Panel_Control.eliminar_objeto(identificador_bodega, identificador_obj)
 
-        elif eleccion == 0:
+        elif eleccion == 0: # Finalizar programa
             print("Programa terminado")
             break
 
