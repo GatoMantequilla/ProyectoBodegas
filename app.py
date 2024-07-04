@@ -156,7 +156,7 @@ class PANEL_CONTROL: # Se define otra función llamada 'PANEL_CONTROL'
         bodega = self.buscar_bodega(identificador) #Buscamos bodega 
         objeto = self.buscar_obj_bodega(bodega,identificador_obj) #Producto en bodega
         if objeto and bodega: #Si existe objeto y bodega se imprimen los valores del producto
-            print(f"Id: {objeto['identificador_obj']}")
+            print(f"Id: {objeto['Identificador_obj']}")
             print(f"Nombre: {objeto['Nombre']}")
             print(f"Espacio por unidad: {objeto['Espacio_necesario']}")
             print(f"Cantidad: {objeto['Cantidad']}")
