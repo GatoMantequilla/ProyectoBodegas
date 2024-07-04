@@ -56,8 +56,9 @@ class PANEL_CONTROL: # Se define otra función llamada 'PANEL_CONTROL'
     def crear_objeto(): # Se define una función que crea un objeto nuevo
         identificador_obj = input("Ingrese el id: ")
         nombre = input("Ingrese el nombre del objeto: ")
+        cantidad = int(input('Ingrese la cantidad existente de objetos: '))
         espacio_necesario = float(input("Ingrese el espacio necesario del objeto: "))
-        objeto = {"Identificador_obj": identificador_obj, "Nombre": nombre, "Espacio_necesario": espacio_necesario}
+        objeto = {"Identificador_obj": identificador_obj, "Nombre": nombre, "Espacio_necesario": espacio_necesario, 'Cantidad': cantidad}
         return objeto # La función devolverá el objeto con todos sus parámetros ingresados
 
     def buscar_si_esta_obj_bodega(self, bodega, identificador_obj): # Se define una función que encuentre un objeto en una bodega
@@ -79,7 +80,7 @@ class PANEL_CONTROL: # Se define otra función llamada 'PANEL_CONTROL'
 
     def evaluar_espacio(self, cantidad, bodega, objeto): # Se define una función que evalúa el espacio de la bodega
         espacio_necesario = objeto["Espacio_necesario"] * cantidad # El espacio necesario se calculará como el espacio necesario que el objeto requiere multiplicado por la cantidad de objetos
-        espacio_disponible = float(bodega.capacidad) - float(bodega.espacio_usado) # El espacio disponible restará los espacios total y usado convertidos a valores numéricos
+        espacio_disponible = int(bodega.capacidad) - int(bodega.espacio_usado) # El espacio disponible restará los espacios total y usado convertidos a valores numéricos
         if espacio_disponible >= espacio_necesario:
             return True # Si el espacio disponible es mayor o igual al requerido, se agregará el producto
         else:
@@ -92,22 +93,24 @@ class PANEL_CONTROL: # Se define otra función llamada 'PANEL_CONTROL'
 
     def redefinir_espacio_resta(self, cantidad, bodega, objeto):
         espacio_a_restar = objeto["Espacio_necesario"] * cantidad
-        bodega.espacio_usado = bodega.espacio_usado - espacio_a_restar       
+        bodega.espacio_usado = float(bodega.espacio_usado) - espacio_a_restar       
 
-    def agregar_objeto(self, Identificador):
+    def agregar_objeto(self, identificador):
         objeto = self.crear_objeto()
         cantidad = int(input('Ingrese la cantidad que desea añadir: '))
-        bodega = self.buscar_bodega(Identificador)
+        bodega = self.buscar_bodega(identificador)
         if self.evaluar_espacio(cantidad, bodega, objeto):
             if self.buscar_obj_bodega(bodega, objeto):
-                decision = input(f"El objeto de nombre {objeto['nombre']} ya existe en esta bodega ¿Desea agregar más cantidad del mismo?")
-                if decision == "Y":
+                decision = input(f"El objeto de nombre {objeto['nombre']} ya existe en esta bodega. ¿Desea agregar más cantidad del mismo? (Y/N): ")
+                if decision.upper() == "Y":
                     self.redefinir_espacio_suma(cantidad, bodega, objeto)
-                    print("Su objeto redefinido en la bodega exitosamente...")
+                    print("Objeto redefinido en la bodega exitosamente...")
             else:
+                bodega.productos.append(objeto)  # Se agrega el objeto a la lista de productos de la bodega
                 self.redefinir_espacio_resta(cantidad, bodega, objeto)
+                GESTION.guardar_bodegas(self.bodegas)  # Luego, se guardan los cambios en el archivo JSON
                 print("Su objeto ha sido agregado a la bodega exitosamente...")
-                bodega.productos.append(objeto)
+            print(f'Productos en la bodega: {bodega.productos}')
 
     def eliminar_objeto(self, Identificador, Identificador_obj):
         bodega = BODEGAS.buscar_bodega(Identificador)
@@ -123,24 +126,21 @@ class PANEL_CONTROL: # Se define otra función llamada 'PANEL_CONTROL'
         print(f"Id: {bodega.identificador}")
         print(f"Capacidad: {bodega.capacidad}")
         print(f"Espacio usado: {bodega.espacio_usado}")
-        for objeto in bodega.productos:
-            print(f"-> {objeto['nombre']} ({objeto['cantidad']}))")
+        print(f'Productos: {bodega.productos}')
 
     def mostrar_bodegas(self):
         for bodega in self.bodegas:
             print(f"Id: {bodega.identificador}")
             print(f"Capacidad: {bodega.capacidad}")
             print(f"Espacio usado: {bodega.espacio_usado}")
-            for objeto in bodega.productos:
-                print(f"-> {objeto['nombre']} ({objeto['cantidad']}))")
+            print(f'Productos: {bodega.productos}')
 
     def mostrar_productos_bodega(self, identificador):
-        bodega = BODEGAS.buscar_bodega(identificador)
-        for objeto in bodega.productos:
-            print(f"-> {objeto['nombre']} ({objeto['cantidad']}))")
+        bodega = self.buscar_bodega(identificador)
+        print(f"{bodega.productos}")
 
     def mostrar_producto_bodega(self, identificador, identificador_obj):
-        bodega = BODEGAS.buscar_bodega(identificador)
+        bodega = self.buscar_bodega(identificador)
         objeto = self.buscar_obj_bodega(bodega,identificador_obj)
         if objeto:
             print(f"Id: {objeto['identificador_obj']}")
@@ -149,7 +149,7 @@ class PANEL_CONTROL: # Se define otra función llamada 'PANEL_CONTROL'
             print(f"Cantidad: {objeto['cantidad']}")
 
     def cambiar_cantidad_objeto(self, identificador, identificador_obj):
-        bodega = BODEGAS.buscar_bodega(identificador)
+        bodega = self.buscar_bodega(identificador)
         objeto = self.buscar_obj_bodega(bodega,identificador_obj)
         if objeto:
             print(f"Actualmente en esta bodega hay {objeto['cantidad']} de {objeto['nombre']}")

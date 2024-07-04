@@ -1,8 +1,15 @@
 [
     {
-        "identificador": "123",
-        "capacidad": 100,
-        "espacio_usado": 0,
-        "productos": []
+        "identificador": "1",
+        "capacidad": 4000,
+        "espacio_usado": -90.0,
+        "productos": [
+            {
+                "Identificador_obj": "1",
+                "Nombre": "Papas",
+                "Espacio_necesario": 30.0,
+                "Cantidad": 0
+            }
+        ]
     }
 ]
