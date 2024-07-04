@@ -100,17 +100,18 @@ class PANEL_CONTROL: # Se define otra función llamada 'PANEL_CONTROL'
         objeto = self.crear_objeto() #Llamamos a esta funcion para crear el diccionario que define al objeto
         bodega = self.buscar_bodega(identificador) #Buscamos la bodega con ese identificador
         cantidad = objeto['Cantidad'] #La cantidad a agregar sera la cantidad predefinida antes dentro del objeto
-        if self.evaluar_espacio(cantidad, bodega, objeto): #(NO SUFICIENTE = FALSE, SUFICIENTE = TRUE)
-            if self.buscar_obj_bodega(bodega, objeto): #Se busca el obj en la bodega
-                decision = input(f"El objeto de nombre {objeto['Nombre']} ya existe en esta bodega. ¿Desea agregar más cantidad del mismo? (Y/N): ") #Si ya existe se pregunta si se quiere agregar más
-                if decision.upper() == "Y":
-                    self.redefinir_espacio_suma(cantidad, bodega, objeto) #Redefine espacio
-                    print("Objeto redefinido en la bodega exitosamente...")
-            else:
-                bodega.productos.append(objeto)  # Se agrega el objeto a la lista de productos de la bodega
-                self.redefinir_espacio_suma(cantidad, bodega, objeto) # Añade el espacio usado por esta cantidad de objeto
-                GESTION.guardar_bodegas(self.bodegas)  # Luego, se guardan los cambios en el archivo JSON
-                print("Su objeto ha sido agregado a la bodega exitosamente...")
+        if bodega and objeto:
+            if self.evaluar_espacio(cantidad, bodega, objeto): #(NO SUFICIENTE = FALSE, SUFICIENTE = TRUE)
+                if self.buscar_obj_bodega(bodega, objeto): #Se busca el obj en la bodega
+                    decision = input(f"El objeto de nombre {objeto['Nombre']} ya existe en esta bodega. ¿Desea agregar más cantidad del mismo? (Y/N): ") #Si ya existe se pregunta si se quiere agregar más
+                    if decision.upper() == "Y":
+                        self.redefinir_espacio_suma(cantidad, bodega, objeto) #Redefine espacio
+                        print("Objeto redefinido en la bodega exitosamente...")
+                else:
+                    bodega.productos.append(objeto)  # Se agrega el objeto a la lista de productos de la bodega
+                    self.redefinir_espacio_suma(cantidad, bodega, objeto) # Añade el espacio usado por esta cantidad de objeto
+                    GESTION.guardar_bodegas(self.bodegas)  # Luego, se guardan los cambios en el archivo JSON
+                    print("Su objeto ha sido agregado a la bodega exitosamente...")
 
     def eliminar_objeto(self, Identificador, Identificador_obj):
         bodega = self.buscar_bodega(Identificador) #Se busca bodega
